@@ -1,8 +1,8 @@
-package com.apistutorial.apistutorial.publisher.model;
+package com.apistutorial.apistutorial.publisher;
 
 public class Publisher {
 
-    private String id;
+    private Integer publisherId;
     private String name;
     private String emailId;
     private String phoneNumber;
@@ -10,19 +10,19 @@ public class Publisher {
     public Publisher() {
     }
 
-    public Publisher(String id, String name, String emailId, String phoneNumber) {
-        this.id = id;
+    public Publisher(Integer publisherId, String name, String emailId, String phoneNumber) {
+        this.publisherId = publisherId;
         this.name = name;
         this.emailId = emailId;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getId() {
-        return id;
+    public Integer getPublisherId() {
+        return publisherId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPublisherId(Integer publsiherId) {
+        this.publisherId = publisherId;
     }
 
     public String getName() {

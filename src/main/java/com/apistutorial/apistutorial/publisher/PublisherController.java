@@ -2,6 +2,7 @@ package com.apistutorial.apistutorial.publisher;
 
 import com.apistutorial.apistutorial.exception.LibraryResourceAlreadyExistException;
 import com.apistutorial.apistutorial.exception.LibraryResourceNotFoundException;
+import com.apistutorial.apistutorial.util.LibraryApiUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +65,15 @@ public class PublisherController {
         }
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<?> searchPublisher(@RequestParam String name){
+
+        if(!LibraryApiUtils.doesStringValueExist(name)){
+            return new ResponseEntity<>("Please enter a name to search Publisher", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(publisherService.searchPublisher(name), HttpStatus.OK);
     }
 }

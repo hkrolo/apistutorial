@@ -21,7 +21,7 @@ public class Publisher {
         return publisherId;
     }
 
-    public void setPublisherId(Integer publsiherId) {
+    public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
     }
 

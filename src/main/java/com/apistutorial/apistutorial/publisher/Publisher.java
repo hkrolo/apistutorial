@@ -1,10 +1,18 @@
 package com.apistutorial.apistutorial.publisher;
 
+import javax.validation.constraints.*;
+
 public class Publisher {
 
     private Integer publisherId;
+
+    @Size(min = 1, max = 50, message = "Publisher name must be between 1 and 50 characters")
     private String name;
+
+    @Email(message = "Please enter a valid Email id")
     private String emailId;
+
+    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{3}", message = "Please enter phone number in format 123-456-789")
     private String phoneNumber;
 
     public Publisher() {

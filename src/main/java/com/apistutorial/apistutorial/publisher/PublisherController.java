@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -39,7 +40,7 @@ public class PublisherController {
     }
 
     @PostMapping
-    public ResponseEntity addPublisher(@RequestBody Publisher publisher,
+    public ResponseEntity addPublisher(@Valid @RequestBody Publisher publisher,
                                        @RequestHeader(value = "Trace-id", defaultValue = "") String traceId){
 
         if(!LibraryApiUtils.doesStringValueExist(traceId)){
@@ -56,7 +57,7 @@ public class PublisherController {
     }
 
     @PutMapping(path = "/{publisherId}")
-    public ResponseEntity updatePublisher(@PathVariable Integer publisherId, @RequestBody Publisher publisher,
+    public ResponseEntity updatePublisher(@PathVariable Integer publisherId, @Valid @RequestBody Publisher publisher,
                                           @RequestHeader(value = "Trace-id", defaultValue = "") String traceId){
 
         if(!LibraryApiUtils.doesStringValueExist(traceId)){

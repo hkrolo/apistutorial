@@ -3,6 +3,8 @@ package com.apistutorial.apistutorial.publisher;
 import com.apistutorial.apistutorial.exception.LibraryResourceAlreadyExistException;
 import com.apistutorial.apistutorial.exception.LibraryResourceNotFoundException;
 import com.apistutorial.apistutorial.util.LibraryApiUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class PublisherService {
 
+    private static Logger logger = LoggerFactory.getLogger(PublisherService.class);
     private PublisherRepository publisherRepository;
 
     public PublisherService(PublisherRepository publisherRepository) {
@@ -24,6 +27,7 @@ public class PublisherService {
     public void  addPublisher(Publisher publisherToBeAdded, String traceId)
             throws LibraryResourceAlreadyExistException {
 
+        logger.debug("TraceId: {}, Request to add publisher: {}", traceId, publisherToBeAdded);
         PublisherEntity publisherEntity = new PublisherEntity(
             publisherToBeAdded.getName(),
             publisherToBeAdded.getEmailId(),
@@ -35,10 +39,12 @@ public class PublisherService {
         try{
             addedPublisher = publisherRepository.save(publisherEntity);
         }catch(DataIntegrityViolationException e){
+            logger.error("TraceId: {} , Publisher already exist!", traceId, e);
             throw new LibraryResourceAlreadyExistException("TraceId: " + traceId + ", Publisher already exist!");
         }
 
         publisherToBeAdded.setPublisherId(addedPublisher.getPublisherid());
+        logger.info("TraceId: {}, Publisjer adder: {}", traceId, publisherToBeAdded);
     }
 
     public Publisher getPublisher(Integer publisherId, String traceId) throws LibraryResourceNotFoundException {

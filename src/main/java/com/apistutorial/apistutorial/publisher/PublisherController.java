@@ -3,6 +3,8 @@ package com.apistutorial.apistutorial.publisher;
 import com.apistutorial.apistutorial.exception.LibraryResourceAlreadyExistException;
 import com.apistutorial.apistutorial.exception.LibraryResourceNotFoundException;
 import com.apistutorial.apistutorial.util.LibraryApiUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @RequestMapping(path = "/v1/publishers")
 public class PublisherController {
 
+    private static Logger logger = LoggerFactory.getLogger(PublisherController.class);
     private PublisherService publisherService;
 
     public PublisherController(PublisherService publisherService) {
@@ -43,16 +46,19 @@ public class PublisherController {
     public ResponseEntity addPublisher(@Valid @RequestBody Publisher publisher,
                                        @RequestHeader(value = "Trace-id", defaultValue = "") String traceId){
 
+        logger.debug("Request to add publisher: {}", publisher);
+
         if(!LibraryApiUtils.doesStringValueExist(traceId)){
             traceId = UUID.randomUUID().toString();
         }
-
+        logger.debug("Added TraceId: {}, ", traceId);
         try {
             publisherService.addPublisher(publisher, traceId);
         } catch (LibraryResourceAlreadyExistException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
 
+        logger.debug("Returning response for TraceId: {},", traceId);
         return new ResponseEntity<>(publisher, HttpStatus.CREATED);
     }
 
